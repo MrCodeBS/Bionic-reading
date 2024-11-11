@@ -134,7 +134,13 @@
 
       // Prepare content and initial position
       const bionicText = document.getElementById("fullscreen-view").innerText || "No text available";
-      const lines = pdf.splitTextToSize(bionicText, pageWidth - marginLeft - marginRight);
+      const lines = bionicText.split('\n').map(line => {
+        return line.split(' ').map(word => {
+          const half = Math.floor(word.length * 0.4); // Highlight the first 40% of the word
+          return `<span class="bionic-word"><span style="font-weight: bold;">${word.slice(0, half)}</span>${word.slice(half)}</span>`;
+        }).join(' ');
+      });
+
       let y = marginTop;
       let pageNumber = 1;
 
@@ -146,6 +152,7 @@
           y = marginTop;
           pageNumber += 1;
         }
+        pdf.setFontStyle("normal");
         pdf.text(line, marginLeft, y);
         y += lineHeight;
       });
