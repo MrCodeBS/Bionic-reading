@@ -129,30 +129,28 @@
       const pageHeight = pdf.internal.pageSize.getHeight();
 
       // Font settings
-      pdf.setFont("Helvetica", "bold");
+      pdf.setFont("Helvetica", "normal");
       pdf.setFontSize(12);
 
       // Prepare content and initial position
-      const bionicText = document.getElementById("fullscreen-view").innerText || "No text available";
-      const lines = bionicText.split('\n').map(line => {
+      const bionicText = document.getElementById("fullscreen-view").innerText.split('\n').map(line => {
         return line.split(' ').map(word => {
           const half = Math.floor(word.length * 0.4); // Highlight the first 40% of the word
-          return `<span class="bionic-word"><span>${word.slice(0, half)}</span>${word.slice(half)}</span>`;
+          return `<span style="font-weight: bold;">${word.slice(0, half)}</span>${word.slice(half)}`;
         }).join(' ');
-      });
+      }).join('\n');
 
       let y = marginTop;
       let pageNumber = 1;
 
       // Add content line-by-line
-      lines.forEach((line, index) => {
+      bionicText.split('\n').forEach((line, index) => {
         if (y + lineHeight > pageHeight - marginBottom) {
           addPageNumber(pdf, pageNumber, pageWidth, pageHeight, marginBottom); // Add page number before adding a new page
           pdf.addPage();
           y = marginTop;
           pageNumber += 1;
         }
-        pdf.setFont("Helvetica", "normal");
         pdf.text(line, marginLeft, y);
         y += lineHeight;
       });
