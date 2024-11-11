@@ -129,7 +129,7 @@
       const pageHeight = pdf.internal.pageSize.getHeight();
 
       // Font settings
-      pdf.setFont("Helvetica", "normal");
+      pdf.setFont("Helvetica", "bold");
       pdf.setFontSize(12);
 
       // Prepare content and initial position
@@ -137,7 +137,7 @@
       const lines = bionicText.split('\n').map(line => {
         return line.split(' ').map(word => {
           const half = Math.floor(word.length * 0.4); // Highlight the first 40% of the word
-          return `<span class="bionic-word"><span style="font-weight: bold;">${word.slice(0, half)}</span>${word.slice(half)}</span>`;
+          return `<span class="bionic-word"><span>${word.slice(0, half)}</span>${word.slice(half)}</span>`;
         }).join(' ');
       });
 
@@ -152,7 +152,7 @@
           y = marginTop;
           pageNumber += 1;
         }
-        pdf.setFontStyle("normal");
+        pdf.setFont("Helvetica", "normal");
         pdf.text(line, marginLeft, y);
         y += lineHeight;
       });
