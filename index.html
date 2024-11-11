@@ -133,18 +133,13 @@
       pdf.setFontSize(12);
 
       // Prepare content and initial position
-      const bionicText = document.getElementById("fullscreen-view").innerText.split('\n').map(line => {
-        return line.split(' ').map(word => {
-          const half = Math.floor(word.length * 0.4); // Highlight the first 40% of the word
-          return `<span style="font-weight: bold;">${word.slice(0, half)}</span>${word.slice(half)}`;
-        }).join(' ');
-      }).join('\n');
-
+      const bionicText = document.getElementById("fullscreen-view").innerText || "No text available";
+      const lines = pdf.splitTextToSize(bionicText, pageWidth - marginLeft - marginRight);
       let y = marginTop;
       let pageNumber = 1;
 
       // Add content line-by-line
-      bionicText.split('\n').forEach((line, index) => {
+      lines.forEach((line, index) => {
         if (y + lineHeight > pageHeight - marginBottom) {
           addPageNumber(pdf, pageNumber, pageWidth, pageHeight, marginBottom); // Add page number before adding a new page
           pdf.addPage();
