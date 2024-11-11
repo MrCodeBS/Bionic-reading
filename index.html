@@ -41,7 +41,11 @@
       line-height: 1.6;
     }
 
-    .bionic-word span {
+    .bionic-word {
+      display: inline-block;
+    }
+
+    .bionic-word span:first-child {
       font-weight: bold;
     }
 
@@ -95,10 +99,11 @@
     function convertToBionic() {
       const text = document.getElementById("inputText").value;
       const bionicText = text.split(" ").map(word => {
-        const half = Math.ceil(word.length / 2);
+        const half = Math.floor(word.length * 0.4); // Highlight the first 40% of the word
         return `<span class="bionic-word"><span>${word.slice(0, half)}</span>${word.slice(half)}</span>`;
       }).join(" ");
       document.getElementById("fullscreen-view").innerHTML = bionicText;
+      document.getElementById("fullscreen-view").style.display = "block";
     }
 
     function toggleFullscreen() {
@@ -120,8 +125,8 @@
       const marginTop = 30;
       const marginBottom = 20;
       const lineHeight = 10;
-      const pageWidth = pdf.internal.pageSize.width;
-      const pageHeight = pdf.internal.pageSize.height;
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
 
       // Font settings
       pdf.setFont("Helvetica", "normal");
